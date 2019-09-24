@@ -44,3 +44,68 @@
 
 * Um grande case é o caso da Netflix, que tem vários projetos que o Spring Boot simplificou muito. Essa é a história do Spring e do Spring Boot. Por isso recomendamos fortemente, se você é um desenvolvedor Java, você vai trabalhar com desenvolvimento de aplicações Java, vai montar uma API REST, vai trabalhar com micro serviços, Spring Boot e Spring Cloud é o canal, é o que está sendo utilizado no mercado, tanto no Brasil quanto no exterior.
 
+<h1>Aula 02 - Publicando Endpoint</h1>
+
+* Uso da anotação @ResponseBody
+
+* Como vimos no vídeo anterior, foi necessário adicionar a anotação @ResponseBody em cima do método lista, na classe controller. Qual o objetivo dessa anotação?
+
+* Indicar ao Spring que o retorno do método deve ser devolvido como resposta
+
+* Por padrão, o Spring considera que o retorno do método é o nome da página que ele deve carregar, mas ao utilizar a anotação @ResponseBody, indicamos que o retorno do método deve ser serializado e devolvido no corpo da resposta.
+
+* Ao invés de devolvermos uma lista de tópicos, vamos criar outra classe que representa só os dados que quero devolver nesse endpoint. E essa classe é só uma classe de valor, que só tem aqueles atributos que quero devolver. Geralmente o pessoal utiliza o padrão DTO, data transfer object, ou muita gente também chama de VO, value object, para esse tipo de classe.
+
+* Nesse treinamento, vamos utilizar o padrão, vamos chamar de DTO. Ao invés de devolver uma lista de tópicos, vou devolver uma lista de tópico DTO. Ele reclama, porque não existe essa classe no nosso projeto, então vamos ter que criar.
+
+* Módulo Spring Boot DevTools
+
+* No vídeo anterior, vimos como adicionar o módulo Spring Boot DevTools ao nosso projeto. Qual a vantagem de se utilizar esse módulo do Spring Boot?
+
+* Evitar a necessidade de reiniciar o servidor manualmente a cada mudança no código da aplicação
+
+* O módulo DevTools inclui ferramentas utilitárias no projeto, dentre elas a Automatic Restart, que reinicia o servidor automaticamente ao detectar alterações no código fonte da aplicação.
+
+<h2>O que é REST?</h2>
+
+* Continuando nosso treinamento de API REST com Spring Boot. No vídeo de hoje vou falar um pouco sobre esse modelo, chamado de REST. Esse vídeo é opcional, se você já conhece o modelo ou não tem interesse em conhecer, você pode pular para a próxima aula, porque nele não vamos adicionar nada à nossa API.
+
+* Como vamos construir uma API REST, é importante conhecer alguns conceitos desse modelo. REST é uma abreviação para representational state transfer, transferência do estado representacional. É um nome meio esquisito, mas nós vamos entender qual a ideia desse modelo.
+
+* Ele nada mais é do que um modelo de arquitetura para sistemas distribuídos. Toda a arquitetura que você tem em um sistema conversando com outro é um sistema distribuído. O criador desse modelo REST, o Roy Fielding, que foi um dos criadores do protocolo HTTP, em 2000 escreveu sua tese de doutorado, onde ele citava alguns dos modelos que poderiam ser utilizados para arquitetura de sistemas distribuídos. Dentre esses modelos estava o REST.
+
+* A ideia dele é que tenho dois sistemas conversando, com transferência de informações via rede. Como eu poderia projetar esse sistema para ter uma boa performance, escalabilidade, sem evitar alguns probleminhas?
+
+* Ele foi a base para a evolução do protocolo HTTP. Hoje a web é toda baseada nesse modelo REST. Depois de muitos anos, o pessoal percebeu que poderiam usar esse modelo para fazer integração de sistemas pela web. Quando iam fazer integração via web, utilizavam aquele webservice no modelo SOAP, só que ele era todo baseado em xml, um pouco complexo, e o pessoal começou a pensar que poderiam usar o próprio REST, já que temos uma arquitetura distribuída baseada na web, no protocolo HTTP, e quero ter flexibilidade. Eles começaram a montar APIs seguindo esse modelo para fazer integração entre sistemas web.
+
+* Quando falamos de uma aplicação web, o que podemos aproveitar do modelo REST? Existem alguns conceitos importantes que podemos trazer para a nossa API. O primeiro conceito é o de recursos.
+
+* Toda aplicação gerencia coisas. Se pensarmos no nosso fórum, ele gerencia alunos, tópicos, respostas, cursos, matrículas, entre outras informações. Essas coisas que o sistema gerencia, que uma aplicação gerencia, no modelo REST é chamado de recurso. No nosso caso, esses seriam os recursos da nossa aplicação.
+
+* Como eu tenho vários recursos que a aplicação vai manipular, preciso de alguma maneira diferenciar um do outro. E a maneira que usamos para isso é utilizando o conceito de URI. Ou seja, cada recurso vai ter uma URI, um identificador único. Do aluno, poderia ser /alunos. Tópicos, /tópicos. Resposta, /respostas. Curso, /cursos. Essa URI é o identificador único de cada recurso. Com isso, consigo diferenciar qual recurso que a API vai manipular.
+
+* Mas mesmo assim ainda tenho um problema. Imagine que estou disparando uma requisição para a URI /alunos. Ou seja, o cliente quer que o servidor manipule o recurso de aluno dele. Mas o que você quer fazer nesse recurso? Posso fazer várias manipulações. Posso devolver todos os recursos, criar um novo recurso, atualizar, excluir. Preciso diferenciar qual a operação, como quero manipular aquele recurso.
+
+* Para tratar dessa parte de manipulação entra outro conceito do HTTP, que são os verbos, os métodos do HTTP. Por exemplo, podemos usar o GET para fazer leitura. Se eu disparar uma requisição GET para o recurso /alunos é porque quero recuperar os recursos. Se eu disparar um POST quero cadastrar, o PUT é atualizar e o DELETE é para excluir.
+
+* Pelos verbos HTTP consigo diferenciar a manipulação que quero fazer em cima daquele recurso. Só que como essa manipulação vai funcionar? Como o cliente me manda uma representação desse recurso e como a API REST devolve essa representação?
+
+* É aí que entra o R do REST. A API está transferindo uma representação do recurso. Ela recebe e devolve representações de determinados recursos. E essas representações são feitas pelos media types, pelos formatos. Geralmente o pessoal utiliza o JSON, mas poderia ser qualquer formato, como XML, HTML, TXT, binário, qualquer outro.
+
+* Com isso, consigo representar esses meus recursos. Daí que veio a ideia do nome REST, porque o que o servidor faz é transferir uma representação de um recurso, do estado atual daquele recurso.
+
+* Perceba que no modelo REST a ideia é utilizar os conceitos, as coisas do protocolo HTTP. As URIs, verbos, representações, media types, entre outros.
+
+* Esse foi só um pedacinho do REST, só os principais conceitos. Também existem outros importantes, como por exemplo comunicação stateless. A web é baseada no protocolo HTTP, que segue o modelo REST. Como a web consegue suportar bilhões de usuários conectados ao mesmo tempo? Um dos segredos é a comunicação stateless. Os servidores da internet no mundo não estão guardando estado da comunicação. Ela é toda stateless. Não tenho que ter zilhões de servidores com zilhões de gigabytes de memória para guardar estado.
+
+* A ideia da API REST é também seguir esse modelo de comunicação stateless, sem usar as seções para armazenar dados dos usuários logados.
+
+* Essa foi só uma breve introdução sobre os principais conceitos do modelo REST, já que vamos construir uma API REST, precisamos ter um pouco de entendimento sobre esses conceitos, porque vamos utilizar isso na construção da nossa API.
+
+<h2>Configuraçoes do banco de dados da aplicação</h2>
+
+* Em uma aplicação Spring Boot, onde são declaradas as configurações do banco de dados utilizado por ela?
+
+* No arquivo application.properties
+
+* No arquivo application.properties, devem ser declaradas as configurações da aplicação, inclusive as relacionadas ao banco de dados dela.
