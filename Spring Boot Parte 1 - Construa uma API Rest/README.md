@@ -109,3 +109,16 @@
 * No arquivo application.properties
 
 * No arquivo application.properties, devem ser declaradas as configurações da aplicação, inclusive as relacionadas ao banco de dados dela.
+
+<h2>Jpa Repository diferenciando ambiguidade</h2>
+
+* Só um detalhe importante. Vamos pensar na seguinte situação. Imagine que na entidade tópico tem um atributo chamado cursoNome. Eu criei aquele método seguindo esse padrão de nomenclatura. Mas agora vai dar um problema, vai dar ambiguidade. Nesse caso, como faço para diferenciar? Você pode colocar um underline. Esse underline vai dizer para o Spring que Curso vai ser um relacionamento e lá dentro do relacionamento tem um atributo Nome. Ele sabe que não é o atributo CursoNome. É o relacionamento Curso e dentro dele Nome. Se você quisesse filtrar pelo atributo, é só não colocar o underline.
+
+* Você pode navegar dentro dos relacionamentos quantos níveis for. Poderia ter findbyCursoCategoriaNome. Ele sai navegando entre os relacionamentos. Dentro do tópico ele vai buscar o curso, dentro do curso buscar a categoria, e dentro da categoria buscar o nome. Funciona. Ele gera todos os joins e monta a query certinho.
+
+<h2>Uso da anotação @RequestBody</h2>
+
+* No último vídeo, vimos que foi necessário anotar o parâmetro do método cadastrar com a anotação @RequestBody. Qual o objetivo dessa anotação?
+
+* Indicar ao Spring que os parâmetros enviados no corpo da requisição devem ser atribuídos ao parâmetro do método
+
