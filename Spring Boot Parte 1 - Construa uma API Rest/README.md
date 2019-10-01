@@ -122,3 +122,63 @@
 
 * Indicar ao Spring que os parâmetros enviados no corpo da requisição devem ser atribuídos ao parâmetro do método
 
+<h2>Validações com Bean Validation</h2>
+
+* No nosso método cadastrar, o objeto que estamos recebendo é o tal do topicoform. O cliente mandou o JSON e o Spring chama o Jackson para pegar e converter no topicoform. Na classe topicoform estão os atributos. Estão os campos que quero validar. Então aqui mesmo, no próprio objeto form, em cima dos atributos, posso colocar as anotações do bin validation, um: @NotNull e @NotEmpty, para dizer que não pode ser um campo nulo e não pode ser vazio. Posso também colocar um número mínimo de caracteres: @Lengh(min = 5).
+
+* Essas anotações fazem parte do bin validation. E aí posso utilizar isso para fazer a validação. Posso colocar que a mensagem tem que ter no mínimo 5 caracteres, o título no mínimo 5 caracteres. Tudo como não nulo e não vazio. A ideia é essa. Vou anotando os atributos com as anotações do bin validation. Tem anotações para string, para campo decimal, campo inteiro, data.
+
+* O bin validation também é flexível. Você pode criar uma nova anotação, caso não tenha. Por exemplo, você quer validar um campo CPF. Você pode criar uma anotação e ensinar como é essa validação. É uma especificação bem bacana e simples de trabalhar.
+
+<h2>Uso da anotação @Valid</h2>
+
+* Vimos anteriormente como realizar validações de formulário, utilizando a especificação Bean Validation. Foi necessário anotar o parâmetro form, no método cadastrar, com a anotação @Valid. Qual o objetivo dessa anotação?
+
+* Indicar ao Spring pa<h2></h2>ra executar as validações do Bean Validation no parâmetro do método
+
+<h2>Uso da anotação @ResponseStatus no RestControllerAdvice</h2>
+
+* Qual o objetivo de se utilizar a anotação @ResponseStatus na classe que representa o RestControllerAdvice?
+
+* Para alterar o status code devolvido como resposta
+
+* Para fazer validações das informações enviadas pelos clientes da API, podemos utilizar a especificação Bean Validation, com as anotações @NotNull, @NotEmpty, @Size, dentre outras;
+
+* Para o Spring disparar as validações do Bean Validation e devolver um erro 400, caso alguma informação enviada pelo cliente esteja inválida, devemos utilizar a anotação @Valid;
+
+* Para interceptar as exceptions que forem lançadas nos métodos das classes controller, devemos criar uma classe anotada com @RestControllerAdvice;
+
+* Para tratar os erros de validação do Bean Validation e personalizar o JSON, que será devolvido ao cliente da API, com as mensagens de erro, devemos criar um método na classe @RestControllerAdvice e anotá-lo com @ExceptionHandler e @ResponseStatus.
+
+<h1>Aula 06 - Métodos PUT, DELETE e tratamento de erro</h1>
+
+<h2>Paths dinâmicos</h2>
+
+* Vimos no último vídeo que é possível definir um path com partes dinâmicas. Qual das seguintes maneiras é a correta para se definir um path dinâmico no Spring?
+
+* @GetMapping(“/{id}”)
+
+<h2>Controle transacional</h2>
+
+* No último vídeo, foi mostrado como implementar a funcionalidade para atualizar um tópico, sendo que no método do controller foi necessário adicionar a anotação @Transactional. Quais os objetivos dessa anotação?
+
+* Efetuar o commit automático da transação, caso não ocorra uma exception
+
+* Executar o método dentro de um contexto transacional
+
+* Só vamos arrumar um detalhe. No método atualizar nós colocamos o @Transactional. Segundo o Spring data a ideia é que todo método que tiver uma operação de escrita, ou seja, salvar, alterar e excluir, deveríamos colocar o @Transactional. No salvar e excluir não precisamos. Mas por via das dúvidas é bom colocar. Vai que troco de provedor ou banco de dados. É bom garantir.
+
+<h2>Vantagem de devolver o erro 404</h2>
+
+* Vimos que é importante fazer um tratamento para quando um recurso não for encontrado, devolvendo nesses casos o código HTTP 404. Qual a vantagem dessa abordagem?
+
+* Evitar que a exception seja devolvida para o cliente no corpo da resposta
+
+* Para receber parâmetros dinâmicos no path da URL, devemos utilizar a anotação @PathVariable;
+* Para mapear requisições do tipo PUT, devemos utilizar a anotação @PutMapping;
+* Para fazer o controle transacional automático, devemos utilizar a anotação @Transactional nos métodos do controller;
+* Para mapear requisições do tipo DELETE, devemos utilizar a anotação @DeleteMapping;
+* Para tratar o erro 404 na classe controller, devemos utilizar o método findById, ao invés do método getOne, e utilizar a classe ResponseEntity para montar a resposta de not found;
+* O método getOne lança uma exception quando o id passado como parâmetro não existir no banco de dados;
+* O método findById retorna um objeto Optional<>, que pode ou não conter um objeto.
+
