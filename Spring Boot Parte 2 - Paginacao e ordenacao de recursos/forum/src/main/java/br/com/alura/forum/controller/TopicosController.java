@@ -8,6 +8,12 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,14 +44,31 @@ public class TopicosController {
 	@Autowired
 	private CursoRepository cursoRepository;
 
-	//@RequestParam é parametro de url e vem como padrao sendo obrigatório
+	//@RequestParam, VEM NA URL E COMO PADRAO É OBRIGATÓRIO
+//	@GetMapping
+//	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+//								 @RequestParam int pagina,
+//								 @RequestParam int qtd,
+//								 @RequestParam String ordenacao) {
+
+	//PARA OS CAMPOS COM A PAGINACAO SERAO PASSADOS VIA URL E O SPRING VAI PEGAR AUTOMATICO POR CONTA DA ANOTACAO NA CLASSE ForumApplication
+	//OS CAMPOS NA URL SAO: page=0&size=10&sort=id,asc
+	// (asc para crescente e desc para decrescente)
+	//OS CAMPOS NA URL SAO: page=0&size=10&sort=id,asc&sort=dataCriaca,desc -> possivel pegar 2 parametros, o spring sabe que é ordenacao multipla
+	//@PageableDefault pega os parametros como padrao do spring
 	@GetMapping
-	public List<TopicoDto> lista(@RequestParam String nomeCurso, int pagina, int qtd) {
+	//value = id do cache
+	@Cacheable(value = "listaDeTopicos")
+	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso, @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+		//SE COLOCAR O System.out.println para ver se ele está chamando de novo o método e pegando o cache
+		//MAS UMA FORMA MELHOR É SETTAR PARA VER O SQL DO JPA NO APPLICATION.PROPERTIES
+//		Pageable paginacao = PageRequest.of(pagina, qtd, Sort.Direction.ASC, ordenacao);
+
 		if (nomeCurso == null) {
-			List<Topico> topicos = topicoRepository.findAll();
+			Page<Topico> topicos = topicoRepository.findAll(paginacao);
 			return TopicoDto.converter(topicos);
 		} else {
-			List<Topico> topicos = topicoRepository.findByCursoNome(nomeCurso);
+			Page<Topico> topicos = topicoRepository.findByCursoNome(nomeCurso, paginacao);
 			return TopicoDto.converter(topicos);
 		}
 	}
@@ -93,6 +116,8 @@ public class TopicosController {
 		
 		return ResponseEntity.notFound().build();
 	}
+
+
 
 }
 

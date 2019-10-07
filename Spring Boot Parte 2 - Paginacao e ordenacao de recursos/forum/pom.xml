@@ -28,7 +28,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+
+		<!-- SE VOCE NAO SETAR QUAL PROVEDOR DE CACHE O SPRING VAI USAR UM PROVEDOR NA PRÓPRIA MEMÓRIA UTILIZANDO UM HashMap
+		ESSA ABORDAGEM NAO É RECOMENDADA PARA AMBIENTES DE PRODUCAO-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
