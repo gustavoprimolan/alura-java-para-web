@@ -36,3 +36,53 @@
 * Para indicar ao Spring o nome do cache associado a um determinado método
 
 * A string passada como parâmetro para a anotação @Cacheable funciona como um identificador único do cache.
+
+<h2>Sobre a anotação @CacheEvict</h2>
+
+* Sobre a utilização da anotação @CacheEvict, é correto afirmar que:
+
+* Ela deveria ser utilizada nos métodos que alteraram os registros armazenados em cache pela API
+
+* Isso é importante para evitar que os clientes obtenham informações desatualizadas.
+
+* Devemos indicar, no parâmetro value, quais caches devem ser invalidados
+
+* Nesse parâmetro devemos indicar os identificadores dos caches que deverão ser invalidados.
+
+<h2>Boas práticas no uso de cache</h2>
+
+* Nos últimos vídeos nós vimos como utilizar o cache do Spring Boot e como invalidar o cache para na hora que alguém cadastrar, incluir ou alterar um tópico, a lista de tópicos seja atualizada e o cliente não ficar vendo uma informação desatualizada e antiga.
+
+* No vídeo de hoje, vou fazer uma discussão sobre a utilização de cache. Esse vídeo é opcional, não vamos implementar nada no projeto, e se você já conhece cache, você pode pular e ir para o próximo tranquilamente.
+
+* A discussão importante é que cache é um recurso que utilizamos para ganhar performance na aplicação, principalmente onde tenho pesquisas ao banco de dados. Ficar indo e voltando ao banco de dados o tempo inteiro é meio lento, então costumamos utilizar cache para guardar o retorno em memória.
+
+* Porém, na teoria, poderíamos colocar a aplicação inteira em cache então, e eu nunca mais vou no banco de dados. Na prática isso não é muito interessante, porque precisamos invalidar o cache em determinados momentos. Se você ficar toda hora guardando informação, depois limpa, guarda de novo, toda hora você tem que ficar invalidando, isso tem um custo de processamento e pode até piorar a performance da sua aplicação.
+
+* A ideia é você não utilizar cache em todos os lugares, mas sim onde fizer sentido. No geral, utilizamos cache naquelas tabelas que nunca ou raramente são atualizadas. No exemplo do curso, eu utilizei cache na funcionalidade de lista de tópicos. Só que aqui, por exemplo, não é um bom cenário de utilização de cache, porque se pensarmos no fórum da Alura, o tempo inteiro tenho os alunos cadastrando tópicos, excluindo, alterando, postando respostas. Toda hora meu cache ia ser invalidado. Isso ia dar problemas.
+
+* Você vai ter que pensar na sua aplicação. Sabe aquelas tabelas que nunca ou raramente são atualizadas? Quase todo projeto tem aquelas tabelas, por exemplo, de país, de Estado, de cidade, de tipos. É uma tabela estável. Esse é o tópico de entidade de consulta em que faz sentido utilizar cache, porque vou fazer a consulta uma única vez, vou guardar o resultado em memória, e aquele resultado vai ficar um bom período de tempo em memória. Ele não vai ser atualizado o tempo inteiro.
+
+* Tomem cuidado no projeto de vocês, onde vão utilizar o cache. Procurem pensar um pouco antes de utilizar e utilizem nesse tipo de situação, nesses métodos que nunca ou raramente vão ser atualizados, porque assim você evita esse custo de limpar o cache e guardar de novo.
+
+* Essa era a discussão de hoje sobre as boas práticas no uso de cache. Espero vocês no próximo vídeo, onde vamos ver novos recursos para completar e deixar nossa API mais interessante.
+
+* Para que o Spring guarde o retorno de um método no cache, devemos anotá-lo com @Cacheable;
+
+* Para o Spring invalidar algum cache após um determinado método ser chamado, devemos anotá-lo com @CacheEvict;
+
+* Devemos utilizar cache apenas para as informações que nunca ou raramente são atualizadas no banco de dados.
+
+<h1>Aula 03 - Proteção com Spring Security</h1>
+
+<h2>Spring Security e os endpoints da API</h2>
+
+* Ao habilitar o Spring Security, o que acontecerá com os endpoints da API?
+
+* Eles serão bloqueados, por padrão
+
+* Os endpoints se tornam restritos, por padrão.
+
+
+
+
