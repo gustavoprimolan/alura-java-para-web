@@ -84,5 +84,36 @@
 * Os endpoints se tornam restritos, por padrão.
 
 
+<h2>Por que indicar o método GET?</h2>
+
+* Vimos no vídeo anterior que, para liberar acesso ao endpoint de lista de tópicos, foi necessário adicionar a seguinte linha de código:
+
+* antMatchers(HttpMethod.GET, “/topicos”).permitAll();
+* Por que foi necessário indicar o método GET nessa configuração?
+
+* Para liberar acesso apenas às requisições do tipo GET
+
+<h2>Objetivo do método anyRequest().authenticated()</h2>
+
+* Nas configurações de autorização, qual o objetivo de chamar o método anyRequest().authenticated()?
+
+* Para indicar que outras URLs que não foram configuradas devem ter acesso restrito
+
+
+<h2>Lógica de Autenticação</h2>
+
+* No vídeo anterior, vimos que foi necessário criar uma classe, implementando a interface UserDetailsService do Spring Security. Qual o objetivo dessa classe?
+
+
+* Para indicar ao Spring Security que essa é a classe service que executa a lógica de autenticação
+
+* Para utilizar o módulo do Spring Security, devemos adicioná-lo como dependência do projeto no arquivo pom.xml;
+* Para habilitar e configurar o controle de autenticação e autorização do projeto, devemos criar uma classe e anotá-la com @Configuration e @EnableWebSecurity;
+* Para liberar acesso a algum endpoint da nossa API, devemos chamar o método http.authorizeRequests().antMatchers().permitAll() dentro do método configure(HttpSecurity http), que está na classe SecurityConfigurations;
+* O método anyRequest().authenticated() indica ao Spring Security para bloquear todos os endpoints que não foram liberados anteriormente com o método permitAll();
+* Para implementar o controle de autenticação na API, devemos implementar a interface UserDetails na classe Usuario e também implementar a interface GrantedAuthority na classe Perfil;
+* Para o Spring Security gerar automaticamente um formulário de login, devemos chamar o método and().formLogin(), dentro do método configure(HttpSecurity http), que está na classe SecurityConfigurations;
+* A lógica de autenticação, que consulta o usuário no banco de dados, deve implementar a interface UserDetailsService;
+* Devemos indicar ao Spring Security qual o algoritmo de hashing de senha que utilizaremos na API, chamando o método passwordEncoder(), dentro do método configure (AuthenticationManagerBuilder auth), que está na classe SecurityConfigurations.
 
 
